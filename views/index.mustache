@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Game app</title>
+    <link rel="stylesheet" type="text/css" href="/css/app.css">
+</head>
+<body>
+    <h1>Hello {{ name }}</h1>
+
+    <ul id="messages">
+    {{#comments}}
+        <li>{{ realname}}: {{ message }}
+    {{/comments}}
+    </ul>
+
+    <form>
+        <input id="m" autocomplete="off" />
+        <button>Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+    // https://socket.io/get-started/chat/
+
+    $(function () {
+        
+        var socket = io();
+
+        $('form').submit(function(){
+            socket.emit('chat message', $('#m').val());
+            $('#m').val('');
+            return false;
+        });
+
+        socket.on('chat message', function(msg){
+            $('#messages').append($('<li>').text(msg));
+        });
+
+        socket.on('chat joined', function(user){
+            $('#messages').append($('<li>').text(user + " joined the conversation"));
+        });
+        socket.on('chat left', function (usersname) {
+            $('#messages').append($('<li>').text(usersname + " left the conversation"));
+        });
+
+        socket.on('duplicate session', function() {
+            window.location = '/duplicate';
+        });
+
+        socket.on('session terminated', function() {
+            window.location = '/login';
+        });
+
+    });
+    </script>
+</body>
+</html>

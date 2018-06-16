@@ -1,0 +1,18 @@
+<h1>Login</h1>
+<form method="POST">
+    {{#message}}
+        <p>{{ message }}</p>
+    {{/message}}
+
+    <div class="field">
+        <label for="username">Username</label>
+        <input type="text" name="username" value="test">
+    </div>
+    <div class="field">
+        <label for="username">Password</label>
+        <input type="password" name="password" value="secret">
+    </div>
+    <button>Enter</button>
+</form>
+
+<a href="/register">Register an account</a>
